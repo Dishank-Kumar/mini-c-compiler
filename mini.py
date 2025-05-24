@@ -11,8 +11,9 @@ tokens = (
     'EQ', 'ASSIGN',
     'LPAREN', 'RPAREN',
     'LBRACE', 'RBRACE',
-    'SEMI',
     'IF', 'ELSE', 'WHILE', 'INT'
+    'SEMI',
+    
 )
 
 reserved = {
