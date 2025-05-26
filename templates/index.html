@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mini-C Compiler</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { padding: 2rem; }
+        pre { background: #f8f9fa; padding: 1rem; border-radius: 5px; }
+        .tab-content { margin-top: 1rem; }
+        {{ css }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4">Mini-C Compiler</h1>
+        <form method="POST">
+            <div class="mb-3">
+                <label for="code" class="form-label"><strong>Source Code:</strong></label>
+                <textarea class="form-control" id="code" name="code" rows="10">{{ input_code }}</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Compile</button>
+        </form>
+
+        {% if tokens or ast or tac %}
+        <ul class="nav nav-tabs mt-4" id="outputTabs" role="tablist">
+            {% if tokens %}<li class="nav-item" role="presentation">
+                <button class="nav-link active" id="tokens-tab" data-bs-toggle="tab" data-bs-target="#tokens" type="button" role="tab">Tokens</button>
+            </li>{% endif %}
+            {% if ast %}<li class="nav-item" role="presentation">
+                <button class="nav-link {% if not tokens %}active{% endif %}" id="ast-tab" data-bs-toggle="tab" data-bs-target="#ast" type="button" role="tab">AST</button>
+            </li>{% endif %}
+            {% if tac %}<li class="nav-item" role="presentation">
+                <button class="nav-link {% if not tokens and not ast %}active{% endif %}" id="tac-tab" data-bs-toggle="tab" data-bs-target="#tac" type="button" role="tab">TAC</button>
+            </li>{% endif %}
+        </ul>
+
+        <div class="tab-content">
+            {% if tokens %}
+            <div class="tab-pane fade show active" id="tokens" role="tabpanel">
+                <h3 class="mt-3">Lexer Output</h3>
+                <table class="table table-striped">
+                    <thead><tr><th>Token Type</th><th>Value</th></tr></thead>
+                    <tbody>
+                        {% for type, value in tokens %}
+                        <tr><td>{{ type }}</td><td>{{ value }}</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+
+            {% if ast %}
+            <div class="tab-pane fade {% if not tokens %}show active{% endif %}" id="ast" role="tabpanel">
+                <h3 class="mt-3">Parser Output (AST)</h3>
+                <pre>{{ ast }}</pre>
+            </div>
+            {% endif %}
+
+            {% if tac %}
+            <div class="tab-pane fade {% if not tokens and not ast %}show active{% endif %}" id="tac" role="tabpanel">
+                <h3 class="mt-3">Generated Code (TAC)</h3>
+                <pre>{% for line in tac %}{{ line }}
+{% endfor %}</pre>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if code %}
+        <h3 class="mt-4">Syntax Highlighted Code</h3>
+        <div class="border p-3 rounded" style="background:#f8f9fa">{{ code|safe }}</div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
