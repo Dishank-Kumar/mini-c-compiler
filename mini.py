@@ -207,12 +207,13 @@ def generate_code(node):
 # --------------------------------------
 if __name__ == '__main__':
     code = '''
-    int x;
-    x = 5 + 3;
-    if (x) {
-        x = x - 1;
+    int y;
+    y = 10 - 4;
+
+    if (y) {
+        y = y * 2;
     } else {
-        x = x + 1;
+        y = y + 5;
     }
     '''
     print("\n===== Lexical Analysis =====")
